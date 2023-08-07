@@ -1,35 +1,123 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import * as React from 'react'
 
-function App() {
-  const [count, setCount] = useState(0)
+type Story = {
+  title: string;
+  url: string;
+  author: string;
+  numberOfComments: number;
+  points: number;
+  objectId: number;
+}
+
+type Stories = Story[]
+
+const useStorageState = (key: string, initialState: string): [string, (newValue: string) => void] => {
+  const [value, setValue] = React.useState(localStorage.getItem(key) || initialState);
+
+  React.useEffect(() => {
+    localStorage.setItem(key, value)
+  },
+    [value, key]
+  )
+
+  return [value, setValue]
+}
+
+const App = () => {
+
+  const stories = [
+    {
+      title: "React",
+      url: "https://reactjs.org/",
+      author: "Jordan Walks",
+      numberOfComments: 3,
+      points: 4,
+      objectId: 0
+    },
+    {
+      title: "Redux",
+      url: "https://redux.js.org/",
+      author: "Dan Abramov, Andrew Clark",
+      numberOfComments: 2,
+      points: 5,
+      objectId: 1
+    }
+  ]
+
+  const [searchTerm, setSearchTerm] = useStorageState('key','React');
+
+
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  }
+
+  let updatedStories = stories.filter(
+    (item) => item.title.toLocaleLowerCase().includes(
+      searchTerm.toLocaleLowerCase()
+    )
+  )
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div>
+      <h1>Hello world!</h1>
+      <Search searchTerm={searchTerm} onSearch={handleSearch} />
+
+      <hr />
+
+      <List list={updatedStories} />
+    </div>
   )
 }
+
+type SearchProps = {
+  searchTerm: string,
+  onSearch: (event: React.ChangeEvent<HTMLInputElement>) => void
+}
+
+const Search: React.FC<SearchProps> = ({ searchTerm, onSearch }) => {
+
+  const handleEvent = (event: React.ChangeEvent<HTMLInputElement>) => {
+    onSearch(event);
+  }
+
+  return (
+    <div>
+      <label htmlFor='search'>Search: </label>
+      <input id='search' type='text' value={searchTerm} onChange={handleEvent} />
+    </div>
+  )
+}
+
+const List: React.FC<{ list: Stories }> = ({ list }) => {
+  return (
+
+    <ul>
+      {
+        list.map(item => {
+          return (
+            <Item key={item.objectId} {...item} />
+          )
+        }
+        )
+      }
+    </ul>
+  )
+}
+
+const Item: React.FC<Story> = ({ title, url, author, numberOfComments, points, objectId }) => {
+  return (
+    <li key={objectId}>
+
+      <span>
+        <a href={url}>{title}</a>
+      </span>
+      <span>{author}</span>
+      <span>{numberOfComments}</span>
+      <span>{points}</span>
+    </li>
+  )
+}
+
+
 
 export default App
