@@ -44,7 +44,7 @@ const App = () => {
     }
   ]
 
-  const [searchTerm, setSearchTerm] = useStorageState('key', 'React');
+  const [searchTerm, setSearchTerm] = useStorageState('key','React');
 
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
