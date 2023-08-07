@@ -41,6 +41,14 @@ const App = () => {
       numberOfComments: 2,
       points: 5,
       objectId: 1
+    },
+    {
+      title: "Angular",
+      url: "https://angular.io/",
+      author: "Yakov fain, Anton Moiseev",
+      numberOfComments: 6,
+      points: 8,
+      objectId: 2
     }
   ]
 
