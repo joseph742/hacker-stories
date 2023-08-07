@@ -45,7 +45,7 @@ const App = () => {
     {
       title: "Angular",
       url: "https://angular.io/",
-      author: "Yakov fain, Anton Moiseev",
+      author: "Yakov fain, Adam freeman",
       numberOfComments: 6,
       points: 8,
       objectId: 2
