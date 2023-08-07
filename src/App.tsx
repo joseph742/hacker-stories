@@ -44,7 +44,7 @@ const App = () => {
     }
   ]
 
-  const [searchTerm, setSearchTerm] = useStorageState('key','React');
+  const [searchTerm, setSearchTerm] = useStorageState('key', 'React');
 
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -74,19 +74,12 @@ type SearchProps = {
   onSearch: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-const Search: React.FC<SearchProps> = ({ searchTerm, onSearch }) => {
-
-  const handleEvent = (event: React.ChangeEvent<HTMLInputElement>) => {
-    onSearch(event);
-  }
-
-  return (
-    <div>
-      <label htmlFor='search'>Search: </label>
-      <input id='search' type='text' value={searchTerm} onChange={handleEvent} />
-    </div>
-  )
-}
+const Search: React.FC<SearchProps> = ({ searchTerm, onSearch }) => (
+  <>
+    <label htmlFor='search'>Search: </label>
+    <input id='search' type='text' value={searchTerm} onChange={onSearch} />
+  </>
+)
 
 const List: React.FC<{ list: Stories }> = ({ list }) => {
   return (
