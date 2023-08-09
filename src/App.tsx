@@ -41,10 +41,18 @@ const App = () => {
       numberOfComments: 2,
       points: 5,
       objectId: 1
+    },
+    {
+      title: "Angular",
+      url: "https://angular.io/",
+      author: "Yakov fain, Adam freeman, Anton Moiseev",
+      numberOfComments: 6,
+      points: 8,
+      objectId: 2
     }
   ]
 
-  const [searchTerm, setSearchTerm] = useStorageState('key','React');
+  const [searchTerm, setSearchTerm] = useStorageState('key', 'React');
 
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,7 +68,7 @@ const App = () => {
   return (
     <div>
       <h1>Hello world!</h1>
-      <Search searchTerm={searchTerm} onSearch={handleSearch} />
+      <InputWithLabel id='Search' label='Search' type='text' value={searchTerm} onInputChange={handleSearch} />
 
       <hr />
 
@@ -70,14 +78,17 @@ const App = () => {
 }
 
 type SearchProps = {
-  searchTerm: string,
-  onSearch: (event: React.ChangeEvent<HTMLInputElement>) => void
+  id: string,
+  label: string,
+  value: string,
+  type: string,
+  onInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-const Search: React.FC<SearchProps> = ({ searchTerm, onSearch }) => (
+const InputWithLabel: React.FC<SearchProps> = ({ id, label, value, type = 'text', onInputChange }) => (
   <>
-    <label htmlFor='search'>Search: </label>
-    <input id='search' type='text' value={searchTerm} onChange={onSearch} />
+    <label htmlFor={id}>{label}: </label>
+    <input id={id} type={type} value={value} onChange={onInputChange} />
   </>
 )
 
