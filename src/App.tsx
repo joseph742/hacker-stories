@@ -68,8 +68,9 @@ const App = () => {
   return (
     <div>
       <h1>Hello world!</h1>
-      <InputWithLabel id='Search' label='Search' type='text' value={searchTerm} onInputChange={handleSearch} />
-
+      <InputWithLabel id='Search' type='text' value={searchTerm} onInputChange={handleSearch} isFocused>
+        <strong>Search: </strong>
+      </InputWithLabel>
       <hr />
 
       <List list={updatedStories} />
@@ -79,18 +80,32 @@ const App = () => {
 
 type SearchProps = {
   id: string,
-  label: string,
   value: string,
   type: string,
-  onInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+  onInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void,
+  isFocused: boolean,
+  children: React.ReactNode,
 }
 
-const InputWithLabel: React.FC<SearchProps> = ({ id, label, value, type = 'text', onInputChange }) => (
+const InputWithLabel: React.FC<SearchProps> = ({ id, value, type = 'text', onInputChange, isFocused, children }) => {
+
+  const inputRef = React.useRef<HTMLInputElement>(null);
+
+  React.useEffect(()=> {
+    if(isFocused && inputRef) {
+      inputRef.current?.focus()
+    }
+  }, [isFocused])
+
+
+  
+  return (
   <>
-    <label htmlFor={id}>{label}: </label>
-    <input id={id} type={type} value={value} onChange={onInputChange} />
+    <label htmlFor={id}>{children}</label>
+    <input ref={inputRef} id={id} type={type} value={value} onChange={onInputChange} />
   </>
 )
+}
 
 const List: React.FC<{ list: Stories }> = ({ list }) => {
   return (
